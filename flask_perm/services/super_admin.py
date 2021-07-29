@@ -6,8 +6,9 @@ from ..models import SuperAdmin
 def create(email, password):
     super_admin = SuperAdmin(
         email=email,
-        password=bcrypt.generate_password_hash(password)
+        password=bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     )
+    
     db.session.add(super_admin)
     db.session.commit()
     return super_admin
@@ -22,7 +23,7 @@ def verify_password(email, password):
     super_admin = get_by_email(email)
     if not super_admin:
         return False
-    if not bcrypt.check_password_hash(super_admin.password, password):
+    if not bcrypt.checkpw(password.encode('utf-8'), super_admin.password.encode('utf-8')):
         return False
     return True
 
@@ -35,7 +36,7 @@ def delete(id):
 def reset_password(id, password):
     super_admin = get(id)
     if super_admin:
-        super_admin.password = bcrypt.generate_password_hash(password)
+        super_admin.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         db.session.add(super_admin)
     db.session.commit()
     return super_admin

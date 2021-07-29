@@ -85,7 +85,7 @@ def get_permissions():
         filter_by, offset, limit, sort_field, sort_dir)
     count = PermissionService.count_filter_permission(filter_by, offset, limit)
 
-    permissions = map(PermissionService.rest, permissions)
+    permissions = list(map(PermissionService.rest, permissions))
     return ok(permissions, count)
 
 @bp.route('/permissions/<int:permission_id>')
@@ -132,7 +132,7 @@ def get_user_permissions():
         filter_by, offset, limit, sort_field, sort_dir)
     count = UserPermissionService.count_filter_user_permission(filter_by, offset, limit)
 
-    user_permissions = map(UserPermissionService.rest, user_permissions)
+    user_permissions = list(map(UserPermissionService.rest, user_permissions))
     return ok(user_permissions, count)
 
 @bp.route('/user_permissions', methods=['POST'])
@@ -174,7 +174,7 @@ def get_user_group_permissions():
     count = UserGroupPermissionService.count_filter_user_group_permissions(
         filter_by, offset, limit)
 
-    user_group_permissions = map(UserGroupPermissionService.rest, user_group_permissions)
+    user_group_permissions = list(map(UserGroupPermissionService.rest, user_group_permissions))
     return ok(user_group_permissions, count)
 
 @bp.route('/user_group_permissions', methods=['POST'])
@@ -228,7 +228,7 @@ def get_user_groups():
         filter_by, offset, limit, sort_field, sort_dir)
     count = UserGroupService.count_filter_user_group(filter_by, offset, limit)
 
-    user_groups = map(UserGroupService.rest, user_groups)
+    user_groups = list(map(UserGroupService.rest, user_groups))
     return ok(user_groups, count)
 
 @bp.route('/user_groups/<int:user_group_id>')
@@ -275,7 +275,7 @@ def get_user_group_members():
         filter_by, offset, limit, sort_field, sort_dir)
     count = UserGroupMemberService.count_filter_user_group_members(filter_by, offset, limit)
 
-    members = map(UserGroupMemberService.rest, members)
+    members = list(map(UserGroupMemberService.rest, members))
     return ok(members, count)
 
 @bp.route('/user_group_members', methods=['POST'])
@@ -314,7 +314,7 @@ def get_users():
     sort_dir = request.args.get('_sortDir', 'DESC').lower()
     filter_by = _get_filter_by()
     users = current_perm().load_users(filter_by, sort_field, sort_dir, offset, limit)
-    users = map(jsonify_user, users)
+    users = list(map(jsonify_user, users))
     return ok(users)
 
 @bp.route('/users/<int:user_id>')

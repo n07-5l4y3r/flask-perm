@@ -42,9 +42,6 @@ class Perm(object):
         db.app = app
         db.init_app(app)
 
-        bcrypt.app = app
-        bcrypt.init_app(app)
-
         app.config.setdefault('PERM_ADMIN_PREFIX', '/perm-admin')
         app.config.setdefault('PERM_ADMIN_ECHO', False)
 
